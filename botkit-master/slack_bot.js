@@ -81,6 +81,28 @@ var bot = controller.spawn({
 }).startRTM();
 
 
+controller.hears(['tell @*'], 'direct_message', function(bot, message) {
+    console.log(message.text);
+    console.log(typeof message);
+    var username = getUsername(message.text);
+    var encouragement = getEncouragement(message.text);
+    //bot.reply(message, msg);
+    //TODO: Call method that starts convo with username and sends encouragement
+});
+
+function getUsername(message) {
+    var arr = message.split(" ");
+    var username = arr[1];
+    //username.replace('@', '');
+    return username;
+}
+
+function getEncouragement(encouragement) {
+    var arr = encouragement.split(" ");
+    arr.splice(0, 2);
+    return arr.join(' ');
+}
+
 controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', function(bot, message) {
 
     bot.api.reactions.add({
