@@ -81,11 +81,30 @@ var bot = controller.spawn({
 }).startRTM();
 
 
+function sendEncouragement(bot, username, encouragement) {
+    // bot.api.im.open({
+    //     user: 'U2ZPZA5QQ'
+    // }, (err, res) => {
+    //     if (err) {
+    //         bot.botkit.log('Failed to open IM with user', err)
+    //     }
+    //     console.log(res);
+        bot.startConversation({
+            user: 'U2ZPZA5QQ',
+            channel: res.channel.id,
+            text: encouragement
+        }, (err, convo) => {
+            convo.say('This is the shit')
+        });
+    // })
+}
+
 controller.hears(['tell @*'], 'direct_message', function(bot, message) {
-    console.log(message.text);
+    console.log(message);
     console.log(typeof message);
     var username = getUsername(message.text);
     var encouragement = getEncouragement(message.text);
+    sendEncouragement(bot, username, encouragement);
     //bot.reply(message, msg);
     //TODO: Call method that starts convo with username and sends encouragement
 });
