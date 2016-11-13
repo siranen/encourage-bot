@@ -133,8 +133,8 @@ function sendAdminMessage(admin_users, message) {
     }
 }
 
-var scheduledMessage = schedule.scheduleJob('0 0 0 * * 1', function() {
-    findUserAndRecipient(bot);
+controller.hears(['test'], 'direct_message', function(bot, message) {
+   findUserAndRecipient(bot);
 });
 
 // Loops through the users in the team, for each user calls the sendMondayMessage function to determine the recipient
