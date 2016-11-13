@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Encouragebot</title>
+    <title>Pepper</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/main.css" />
+      
+    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+<link rel="shortcut icon" type="image/png" href="http://eg.com/favicon.png"/>
 
     <link href="https://fonts.googleapis.com/css?family=Prompt:400,700" rel="stylesheet">
 
@@ -13,55 +16,82 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
   </head>
-  <body id="body">
-    <div>
-      <div class="row orange-header">
-        <div class="col-md-12 logo">
-          <img src="put logo here">
+  <body  id="body">
+      
+    <div class="row green-header">
+        <!---<div class="col-md-12 logo">
+          <img src="/slack-mark-small.png">
           <p>Made for Slack</p>
         </div>
-        <div class="col-md-12" id="header">
-          <h1>EncourageBot</h1>
-          <h3>Making Slack a more encouraging place,
-          one positive comment at a time</h3>
-        </div>
-      </div>
+          
+        <div class="col-md-12 why">
+          <a href="http://localhost:3000/why">Why Pepper?</a>
+          </div>
+       --->
+            <nav class="navbar">
+                <div class="navbar-brand"> 
+                    <img class="logo" src="slack-mark-small.png">Made for Slack
+                    <a class="nav-item nav-link" href="http://localhost:3000/why">• Why Pepper •</a> 
+                </div>
+            </nav>
+
+            <div class="row container" id="header">
+                <div class="col-md-3">
+                    <img class="pepbot" src="/Pepbot.png">
+                </div>
+                <div class="col-md-9">
+                    <h1>Pepper</h1>
+                    <h3>Making Slack a more positive place, <br> 
+                        one encouraging comment at a time</h3>
+                </div>
+            </div>
+      </div>  
+      
+      
       <div class="row" id="how-it-works">
         <div class="row">
           <h2>How it works</h2>
         </div>
+          <br>
+          <br>
         <div class="row">
-          <div class="col-md-3">
-            <img class="img-how-it-works" src="/Add-to-Slack.png">
+          <div class="col-md-5">
+            <img class="img-how-it-works" src="/how-1.png">
           </div>
-          <div class="col-md-6">
-            <p>Add EncourageBot to Slack</p>
+          <div class="col-md-7">
+            <p>Add Pepper to your Slack using the button below.</p>
           </div>
         </div>
+          <br>
+          <br>
         <div class="row">
-          <div class="col-md-3">
-            <img class="img-how-it-works" src="/Happy-Face.png">
+          <div class="col-md-5">
+            <img class="img-how-it-works" src="/how-2.png">
           </div>
-          <div class="col-md-6">
-            <p>Add EncourageBot to Slack</p>
+          <div class="col-md-7">
+            <p>We'll remind you to send an encouraging message to a team mate each week.</p>
           </div>
         </div>
+          <br>
+          <br>
         <div class="row">
-          <div class="col-md-3">
-            <img class="img-how-it-works" src="/Heart-Message.png">
+          <div class="col-md-5">
+            <img class="img-how-it-works" src="/how-3.png">
           </div>
-          <div class="col-md-6">
-            <p>Add EncourageBot to Slack</p>
+          <div class="col-md-7">
+            <p>Create an ecosystem of positivity and good vibes!</p>
           </div>
         </div>
+          <br>
+          <br>
       </div>
 
       <div class="row add-to-slack">
         <a href="https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id=102325411287.104564288775">
         <img class="slack-btn" alt="Add to Slack" height="40" width="139" src="/Add-Button.png"/></a>
       </div>
-          <div class="">
-            <img src="put screenshot here">
+          <div class="footer">
+            <img src="raisedhandemoji.png">
           </div>
         </div>
       </div>

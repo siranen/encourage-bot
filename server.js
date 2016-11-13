@@ -7,6 +7,10 @@ app.get("/", (req, res) => {
   res.render("encouragesplash");
 });
 
+app.get("/why", (req, res) => {
+  res.render("whypepper");
+});
+
 app.use(express.static(__dirname + '/styles'));
 
 app.listen(3000, () => {
