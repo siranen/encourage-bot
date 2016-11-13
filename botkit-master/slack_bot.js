@@ -183,6 +183,15 @@ controller.hears(['pepper'], 'direct_message,direct_mention,ambient', function(b
     bot.reply(message, "That's my name!!");
 });
 
+controller.hears(['help'], 'direct_message', function(bot, message) {
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'hatched_chick',
+    });
+    bot.reply(message, "Hi! I'm Pepper the Pepbot! It seems you've asked for help- let me tell you about some of the things that I can do! \n \n Every week, I will send you the name of a coworker. \n Reply to me ASAP so that I can send along your positive compliment along anonymously to that coworker. \n The format must be like this: tell @jess you are awesome to work with! \n \n If you receive an appropriate anonymous message from me, just reply with a message including the words flag, and I will notify the administrator of your slack channel so that they can look into who sent you the message :)");
+});
+
 controller.hears(['party'], 'direct_message,direct_mention,ambient', function(bot, message) {
     bot.api.reactions.add({
         timestamp: message.ts,
