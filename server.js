@@ -7,7 +7,7 @@ app.get("/", (req, res) => {
   res.render("encouragesplash");
 });
 
-app.get("/why", (req, res) => {
+app.get("/why-pepper", (req, res) => {
   res.render("whypepper");
 });
 
