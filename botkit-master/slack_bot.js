@@ -83,34 +83,36 @@ var bot = controller.spawn({
 }).startRTM();
 
 var scheduledMessage = schedule.scheduleJob('0 0 0 * * 1', function() {
-    mondayMessage();
+    findUserAndRecipient(bot);
 })
 
-// Loops through the users in the team, for each user calls the mondayMessage function to determine the recipient
-controller.hears(['test'], 'direct_message', function(bot, message) {
-    bot.api.users.list({}, function (err, response) {
-        if (response.hasOwnProperty('members') && response.ok) {
-            var members = []
-            response.members.forEach(function(member) {
-                if (!member.is_bot) {
-                    members.push(member);
-                }
-            })
-            // console.log(members);
+// Loops through the users in the team, for each user calls the sendMondayMessage function to determine the recipient
+function findUserAndRecipient(bot) {
+    // controller.hears(['test'], 'direct_message', function(bot, message) {
+        bot.api.users.list({}, function (err, response) {
+            if (response.hasOwnProperty('members') && response.ok) {
+                var members = []
+                response.members.forEach(function(member) {
+                    if (!member.is_bot) {
+                        members.push(member);
+                    }
+                })
+                // console.log(members);
 
-            var weekNumber = moment().week();
-            var counter = weekNumber % members.length;
-            console.log(counter);
-            for (var i = 0; i < members.length; i++) {
-                var username = members[i];
-                var counter2 = (i + counter) % members.length;
-                var recipient = members[counter2].name;
-                // console.log(username, recipient);
-                sendMondayMessage(bot, username, recipient)
+                var weekNumber = moment("11-15-2016", "MM-DD-YYYY").week();
+                var counter = weekNumber % members.length;
+                console.log(counter);
+                for (var i = 0; i < members.length; i++) {
+                    var username = members[i];
+                    var counter2 = (i + counter) % members.length;
+                    var recipient = members[counter2].name;
+                    // console.log(username, recipient);
+                    sendMondayMessage(bot, username, recipient)
+                }
             }
-        }
-    });
-});
+        });
+    // });
+}
 
 
 function sendMondayMessage(bot, username, recipient) {
