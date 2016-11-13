@@ -235,13 +235,30 @@ controller.hears(['pepper'], 'direct_message,direct_mention,ambient', function(b
     bot.reply(message, "That's my name!!");
 });
 
-controller.hears(['help'], 'direct_message', function(bot, message) {
+controller.hears(['help'], 'direct_message,direct_mention,ambient', function(bot, message) {
     bot.api.reactions.add({
         timestamp: message.ts,
         channel: message.channel,
         name: 'hatched_chick',
     });
-    bot.reply(message, "Hi! I'm Pepper the Pepbot! It seems you've asked for help- let me tell you about some of the things that I can do! \n \n Every week, I will send you the name of a coworker. \n Reply to me ASAP so that I can send along your positive compliment along anonymously to that coworker. \n The format must be like this: tell @jess you are awesome to work with! \n \n If you receive an appropriate anonymous message from me, just reply with a message including the words flag, and I will notify the administrator of your slack channel so that they can look into who sent you the message :)");
+    bot.reply(message, {
+    "attachments": [
+        {
+            "fallback": "Required plain-text summary of the attachment.",
+            "pretext": "Need some help? Here’s what I do:\n\nSend You Reminders: I’ll send you a message here reminding you to send some encouragement to one of your team mates each week. Like this:",
+            "text": "Hi <@" + message.user + ">! Send @[recipient name] some encouragement to pep up their day! :hot_pepper:",
+        },
+        {
+            "fallback": "Required plain-text summary of the attachment.",
+            "pretext": "Deliver Your Messages: Let me know who to send the message to by typing ‘tell’ followed by the name of your team mate. Like this:",
+            "text": "tell @name You did an awesome job this morning! :raised_hands:",
+        },
+        {
+            "fallback": "Summary",
+            "pretext": "Keep It Positive: Report any abusive comments by replying with the word ‘flag’.:triangular_flag_on_post:"
+        }
+    ]
+    });
 });
 
 controller.hears(['party'], 'direct_message,direct_mention,ambient', function(bot, message) {
