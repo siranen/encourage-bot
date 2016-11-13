@@ -70,7 +70,9 @@ if (!process.env.token) {
 }
 
 var Botkit = require('./lib/Botkit.js');
+var schedule = require('node-schedule');
 var os = require('os');
+var moment = require('moment');
 
 var controller = Botkit.slackbot({
     debug: true,
@@ -80,7 +82,53 @@ var bot = controller.spawn({
     token: process.env.token
 }).startRTM();
 
+var scheduledMessage = schedule.scheduleJob('0 0 0 * * 1', function() {
+    mondayMessage();
+})
 
+// Loops through the users in the team, for each user calls the mondayMessage function to determine the recipient
+controller.hears(['test'], 'direct_message', function(bot, message) {
+    bot.api.users.list({}, function (err, response) {
+        if (response.hasOwnProperty('members') && response.ok) {
+            var members = []
+            response.members.forEach(function(member) {
+                if (!member.is_bot) {
+                    members.push(member);
+                }
+            })
+            // console.log(members);
+
+            var weekNumber = moment().week();
+            var counter = weekNumber % members.length;
+            console.log(counter);
+            for (var i = 0; i < members.length; i++) {
+                var username = members[i];
+                var counter2 = (i + counter) % members.length;
+                var recipient = members[counter2].name;
+                // console.log(username, recipient);
+                sendMondayMessage(bot, username, recipient)
+            }
+        }
+    });
+});
+
+
+function sendMondayMessage(bot, username, recipient) {
+   bot.api.im.open({
+        user: username.id
+    }, (err, res) => {
+        if (err) {
+            bot.botkit.log('Failed to open IM with user', err)
+        }
+        bot.startConversation({
+            user: username,
+            channel: res.channel.id,
+        }, (err, convo) => {
+            convo.say("Please pep up " + recipient + " with positive feedback for the week \n Type \'tell @" + recipient + "\' and a message to send your peppy message annonymously ");
+            // convo.say("Type \'tell @" + recipient + "\' and a message to send your peppy message annonymously ");
+        });
+    })
+}
 
 function sendEncouragement(bot, username, encouragement) {
    bot.api.im.open({
