@@ -71,6 +71,7 @@ if (!process.env.token) {
 
 var Botkit = require('./lib/Botkit.js');
 var os = require('os');
+var when = require('when');
 
 var controller = Botkit.slackbot({
     debug: false,
@@ -80,6 +81,55 @@ var bot = controller.spawn({
     token: process.env.token
 }).startRTM();
 
+controller.hears(['flag'], 'direct_message', function(bot, message) {
+    sendFlaggedMessageToAdmin(bot, message);
+    bot.reply(message, "I'll notify the team's admin that the last message was inappropriate.");
+});
+
+function getAdminUsers() {
+    var admin_users = [];
+    bot.api.users.list({}, function (err, response) {
+       if (response.hasOwnProperty('members') && response.ok) {
+           var members = response.members;
+           for (var i = 0; i < members.length; i++) {
+                if (members[i].is_admin) {
+                    admin_users.push(members[i]);
+                }
+            }
+
+       }
+   });
+  return admin_users;
+}
+
+function sendFlaggedMessageToAdmin(bot, message) {
+    // var admin_users = when(getAdminUsers).then(function(message) {
+    //     sendAdminMessage(admin_users, message);
+    // }).catch(console.error);
+
+    var admin_users = getAdminUsers();
+    setTimeout(function(){ sendAdminMessage(admin_users, message)},1000);
+}
+
+function sendAdminMessage(admin_users, message) {
+    for (var i = 0; i < admin_users.length; i++) {
+        var user = admin_users[i];
+        bot.api.im.open({
+            user: user.id
+        }, (err, res) => {
+            if (err) {
+                bot.botkit.log('Failed to open IM with user', err)
+            }
+            console.log(res);
+            bot.startConversation({
+                user: user.id,
+                channel: res.channel.id,
+            }, (err, convo) => {
+                convo.say("Just so you know, <@" + message.user + "> flagged a message as inappropriate. Please investigate.");
+            });
+        })
+    }
+}
 
 function sendEncouragement(bot, username, encouragement) {
    bot.api.im.open({
@@ -104,29 +154,6 @@ controller.hears(['tell @*'], 'direct_message', function(bot, message) {
     sendEncouragement(bot, username, encouragement);
 });
 
-controller.hears(['flag'], 'direct_message', function(bot, message) {
-    sendFlaggedMessageToAdmin(bot, message);
-    bot.reply(message, "I'll notify the team's admin that the last message was inappropriate.");
-});
-
-function sendFlaggedMessageToAdmin(bot, message) {
-    //TODO: call getAdmin
-    bot.api.im.open({
-        user: message.user
-    }, (err, res) => {
-        if (err) {
-            bot.botkit.log('Failed to open IM with user', err)
-        }
-        console.log(res);
-        bot.startConversation({
-            user: 'U31UV9KA9',
-            channel: res.channel.id,
-        }, (err, convo) => {
-            convo.say("Just so you know, <@" + message.user + "> flagged a message as inappropriate. Please investigate.");
-        });
-    })
-}
-
 function getUsername(message) {
     var arr = message.split(" ");
     var username = arr[1];
@@ -143,7 +170,49 @@ function getEncouragement(encouragement) {
     return arr.join(' ');
 }
 
-controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', function(bot, message) {
+controller.hears(['pepper'], 'direct_message,direct_mention,ambient', function(bot, message) {
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'hot_pepper',
+    }, function(err, res) {
+        if (err) {
+            bot.botkit.log('Failed to add emoji reaction :(', err);
+        }
+    });
+    bot.reply(message, "That's my name!!");
+});
+
+controller.hears(['party'], 'direct_message,direct_mention,ambient', function(bot, message) {
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'hot_pepper',
+    });
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'ghost',
+    });
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'confetti_ball',
+    });
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'birthday',
+    });
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'lollipop',
+    });
+    bot.reply(message, "It's party time!!!!!");
+});
+
+controller.hears(['hello', 'hi', 'hey', 'yo'], 'direct_message,direct_mention,mention', function(bot, message) {
 
     bot.api.reactions.add({
         timestamp: message.ts,
@@ -160,7 +229,7 @@ controller.hears(['hello', 'hi'], 'direct_message,direct_mention,mention', funct
         if (user && user.name) {
             bot.reply(message, 'Hello ' + user.name + '!!');
         } else {
-            bot.reply(message, 'Hello.');
+            bot.reply(message, 'Hiya :)');
         }
     });
 });
@@ -247,35 +316,6 @@ controller.hears(['what is my name', 'who am i'], 'direct_message,direct_mention
         }
     });
 });
-
-
-controller.hears(['shutdown'], 'direct_message,direct_mention,mention', function(bot, message) {
-
-    bot.startConversation(message, function(err, convo) {
-
-        convo.ask('Are you sure you want me to shutdown?', [
-            {
-                pattern: bot.utterances.yes,
-                callback: function(response, convo) {
-                    convo.say('Bye!');
-                    convo.next();
-                    setTimeout(function() {
-                        process.exit();
-                    }, 3000);
-                }
-            },
-        {
-            pattern: bot.utterances.no,
-            default: true,
-            callback: function(response, convo) {
-                convo.say('*Phew!*');
-                convo.next();
-            }
-        }
-        ]);
-    });
-});
-
 
 controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your name'],
     'direct_message,direct_mention,mention', function(bot, message) {
