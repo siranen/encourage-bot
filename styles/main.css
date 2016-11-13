@@ -1,0 +1,50 @@
+#body {
+  font-family: 'Prompt', sans-serif;
+}
+
+.logo {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.orange-header {
+  background-color: #FF7350;
+  color: white;
+}
+
+#header {
+  margin: 50px 200px;
+  padding: 0px;
+}
+
+#how-it-works {
+  margin: 20px 200px;
+}
+
+#how-it-works h2 {
+  color: #FF7350;
+}
+
+.col-md-3 img {
+  max-height: 90px;
+  max-width: 90px;
+  margin: 10px 25px;
+}
+
+.col-md-6 p {
+  margin: 15px 25px;
+}
+
+.add-to-slack {
+  background-color: #FFEDDD;
+  min-height: 200px;
+}
+
+.slack-btn {
+  min-height: 100px;
+  min-width: 400px;
+  margin: 100px auto;
+  display: block;
+  vertical-align: middle;
+}

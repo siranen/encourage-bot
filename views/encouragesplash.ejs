@@ -1,30 +1,70 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Encouragebot</title>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <head>
+    <title>Encouragebot</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/main.css" />
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Prompt:400,700" rel="stylesheet">
 
-</head>
-<body>
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <img src="put logo here">
-      <h1>Heading goes here</h1>
-      <p>Put text here</p>
-      <div class="">
-        <a href="put button link here" onclick=""></a>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  </head>
+  <body id="body">
+    <div>
+      <div class="row orange-header">
+        <div class="col-md-12 logo">
+          <img src="put logo here">
+          <p>Made for Slack</p>
+        </div>
+        <div class="col-md-12" id="header">
+          <h1>EncourageBot</h1>
+          <h3>Making Slack a more encouraging place,
+          one positive comment at a time</h3>
+        </div>
       </div>
-    <div class="">
-      <img src="put screenshot here">
+      <div class="row" id="how-it-works">
+        <div class="row">
+          <h2>How it works</h2>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <img class="img-how-it-works" src="/Add-to-Slack.png">
+          </div>
+          <div class="col-md-6">
+            <p>Add EncourageBot to Slack</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <img class="img-how-it-works" src="/Happy-Face.png">
+          </div>
+          <div class="col-md-6">
+            <p>Add EncourageBot to Slack</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <img class="img-how-it-works" src="/Heart-Message.png">
+          </div>
+          <div class="col-md-6">
+            <p>Add EncourageBot to Slack</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row add-to-slack">
+        <a href="https://slack.com/oauth/authorize?scope=incoming-webhook,commands,bot&client_id=102325411287.104564288775">
+        <img class="slack-btn" alt="Add to Slack" height="40" width="139" src="/Add-Button.png"/></a>
+      </div>
+          <div class="">
+            <img src="put screenshot here">
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-  </div>
-</div>
-</body>
+  </body>
 </html>
