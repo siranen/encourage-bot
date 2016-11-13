@@ -73,13 +73,12 @@ var Botkit = require('./lib/Botkit.js');
 var os = require('os');
 
 var controller = Botkit.slackbot({
-    debug: true,
+    debug: false,
 });
 
 var bot = controller.spawn({
     token: process.env.token
 }).startRTM();
-
 
 
 function sendEncouragement(bot, username, encouragement) {
@@ -105,9 +104,32 @@ controller.hears(['tell @*'], 'direct_message', function(bot, message) {
     sendEncouragement(bot, username, encouragement);
 });
 
+controller.hears(['flag'], 'direct_message', function(bot, message) {
+    sendFlaggedMessageToAdmin(bot, message);
+    bot.reply(message, "I'll notify the team's admin that the last message was inappropriate.");
+});
+
+function sendFlaggedMessageToAdmin(bot, message) {
+    //TODO: call getAdmin
+    bot.api.im.open({
+        user: message.user
+    }, (err, res) => {
+        if (err) {
+            bot.botkit.log('Failed to open IM with user', err)
+        }
+        console.log(res);
+        bot.startConversation({
+            user: 'U31UV9KA9',
+            channel: res.channel.id,
+        }, (err, convo) => {
+            convo.say("Just so you know, <@" + message.user + "> flagged a message as inappropriate. Please investigate.");
+        });
+    })
+}
+
 function getUsername(message) {
     var arr = message.split(" ");
-    let username = arr[1];
+    var username = arr[1];
     username = username.toString();
     username = username.replace('@', '');
     username = username.replace('<', '');
