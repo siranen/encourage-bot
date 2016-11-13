@@ -13,22 +13,27 @@
   color: white;
 }
 
-.header {
+#header {
   margin: 50px 200px;
+  padding: 0px;
 }
 
 #how-it-works {
   margin: 20px 200px;
 }
 
+#how-it-works h2 {
+  color: #FF7350;
+}
+
 .col-md-3 img {
-  max-height: 50px;
-  max-width: 50px;
+  max-height: 90px;
+  max-width: 90px;
   margin: 10px 25px;
 }
 
-.col-md-3 p {
-  margin: 25px 25px;
+.col-md-6 p {
+  margin: 15px 25px;
 }
 
 .add-to-slack {
