@@ -110,7 +110,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
     app.use(express.static(__dirname + '/styles'));
 
-    app.listen(3000, () => {
+    app.listen((process.env.PORT || 3000), () => {
       console.log("Example app listening on port ");
     });
 
