@@ -64,6 +64,8 @@ This bot demonstrates many of the core features of Botkit:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
+
+
 if (!process.env.token) {
     console.log('Error: Specify token in environment');
     process.exit(1);
@@ -74,6 +76,54 @@ var schedule = require('node-schedule');
 var os = require('os');
 var when = require('when');
 var moment = require('moment');
+const express     = require("express");
+const app         = express();
+
+
+// Taken from howdya botkit tutorial
+if (!process.env.clientId || !process.env.clientSecret || !process.env.redirectUri) {
+  console.log('Error: Specify clientId clientSecret redirectUri and port in environment');
+  process.exit(1);
+}
+var controller = Botkit.slackbot({
+  json_file_store: './db_slackbutton_bot/',
+  // rtm_receive_messages: false, // disable rtm_receive_messages if you enable events api
+}).configureSlackApp(
+  {
+    clientId: process.env.clientId,
+    clientSecret: process.env.clientSecret,
+    redirectUri: process.env.redirectUri,
+    scopes: ['bot'],
+  }
+);
+controller.setupWebserver(process.env.port,function(err,webserver) {
+
+    app.set("view engine", "ejs");
+
+    app.get("/", (req, res) => {
+      res.render("encouragesplash");
+    });
+
+    app.get("/why-pepper", (req, res) => {
+      res.render("whypepper");
+    });
+
+    app.use(express.static(__dirname + '/styles'));
+
+    app.listen(3000, () => {
+      console.log("Example app listening on port ");
+    });
+
+
+  controller.createWebhookEndpoints(controller.webserver);
+  controller.createOauthEndpoints(controller.webserver,function(err,req,res) {
+    if (err) {
+      res.status(500).send('ERROR: ' + err);
+    } else {
+      res.send('Success!');
+    }
+  });
+});
 
 var controller = Botkit.slackbot({
     debug: false,
