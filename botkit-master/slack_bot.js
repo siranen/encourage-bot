@@ -66,36 +66,45 @@ This bot demonstrates many of the core features of Botkit:
 
 
 
-if (!process.env.token) {
-    console.log('Error: Specify token in environment');
-    process.exit(1);
-}
 
-var Botkit = require('./lib/Botkit.js');
+
+var Botkit = require('botkit');
 var schedule = require('node-schedule');
 var os = require('os');
 var when = require('when');
 var moment = require('moment');
+require('../env.js');
 const express     = require("express");
 const app         = express();
 
+// Botkit-based Redis store
+var Redis_Store = require('./redis_storage.js');
+var redis_url = "rredis://h:p14f0ad0d4e92c182998f4fff029cd52a44d4c6d77c488907fcd68d7fc3f67b0e@ec2-107-22-239-248.compute-1.amazonaws.com:24139"
+var redis_store = new Redis_Store({url: redis_url});
+
+if (!process.env.token) {
+    console.log('Error: Specify token in environment');
+    process.exit(1);
+}
 
 // Taken from howdya botkit tutorial
 if (!process.env.clientId || !process.env.clientSecret || !process.env.redirectUri) {
   console.log('Error: Specify clientId clientSecret redirectUri and port in environment');
   process.exit(1);
 }
+
 var controller = Botkit.slackbot({
-  json_file_store: './db_slackbutton_bot/',
+  storage: redis_store,
   // rtm_receive_messages: false, // disable rtm_receive_messages if you enable events api
 }).configureSlackApp(
   {
     clientId: process.env.clientId,
     clientSecret: process.env.clientSecret,
-    redirectUri: process.env.redirectUri,
+    redirectUri: process.env.redirectUri, // optional parameter passed to slackbutton oauth flow
     scopes: ['bot'],
   }
 );
+
 controller.setupWebserver(process.env.port,function(err,webserver) {
 
     app.set("view engine", "ejs");
