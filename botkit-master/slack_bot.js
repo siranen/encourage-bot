@@ -63,24 +63,29 @@ This bot demonstrates many of the core features of Botkit:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
-
-
-
-
 var Botkit = require('botkit');
 var schedule = require('node-schedule');
 var os = require('os');
 var when = require('when');
 var moment = require('moment');
-require('../env.js');
 const express     = require("express");
 const app         = express();
 
 // Botkit-based Redis store
 var Redis_Store = require('./redis_storage.js');
-var redis_url = "rredis://h:p14f0ad0d4e92c182998f4fff029cd52a44d4c6d77c488907fcd68d7fc3f67b0e@ec2-107-22-239-248.compute-1.amazonaws.com:24139"
+var redis_url = process.env.REDIS_URL || "redis://127.0.0.1:6379";
 var redis_store = new Redis_Store({url: redis_url});
+
+// Programmatically use appropriate process environment variables
+ try {
+   require('../env.js');
+ } catch (e) {
+   if (e.code === 'MODULE_NOT_FOUND') {
+     console.log('Not using environment variables from env.js');
+   }
+ }
+
+ var port = process.env.PORT || process.env.port;
 
 if (!process.env.token) {
     console.log('Error: Specify token in environment');
@@ -105,7 +110,7 @@ var controller = Botkit.slackbot({
   }
 );
 
-controller.setupWebserver(process.env.port,function(err,webserver) {
+controller.setupWebserver(port,function(err,webserver) {
 
     app.set("view engine", "ejs");
 
