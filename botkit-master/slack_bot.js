@@ -63,15 +63,7 @@ This bot demonstrates many of the core features of Botkit:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
-
-
-if (!process.env.token) {
-    console.log('Error: Specify token in environment');
-    process.exit(1);
-}
-
-var Botkit = require('./lib/Botkit.js');
+var Botkit = require('botkit');
 var schedule = require('node-schedule');
 var os = require('os');
 var when = require('when');
@@ -79,24 +71,46 @@ var moment = require('moment');
 const express     = require("express");
 const app         = express();
 
+// Botkit-based Redis store
+var Redis_Store = require('./redis_storage.js');
+var redis_url = process.env.REDIS_URL || "redis://127.0.0.1:6379";
+var redis_store = new Redis_Store({url: redis_url});
+
+// Programmatically use appropriate process environment variables
+ try {
+   require('../env.js');
+ } catch (e) {
+   if (e.code === 'MODULE_NOT_FOUND') {
+     console.log('Not using environment variables from env.js');
+   }
+ }
+
+ var port = process.env.PORT || process.env.port;
+
+if (!process.env.token) {
+    console.log('Error: Specify token in environment');
+    process.exit(1);
+}
 
 // Taken from howdya botkit tutorial
 if (!process.env.clientId || !process.env.clientSecret || !process.env.redirectUri) {
   console.log('Error: Specify clientId clientSecret redirectUri and port in environment');
   process.exit(1);
 }
+
 var controller = Botkit.slackbot({
-  json_file_store: './db_slackbutton_bot/',
+  storage: redis_store,
   // rtm_receive_messages: false, // disable rtm_receive_messages if you enable events api
 }).configureSlackApp(
   {
     clientId: process.env.clientId,
     clientSecret: process.env.clientSecret,
-    redirectUri: process.env.redirectUri,
+    redirectUri: process.env.redirectUri, // optional parameter passed to slackbutton oauth flow
     scopes: ['bot'],
   }
 );
-controller.setupWebserver(process.env.port,function(err,webserver) {
+
+controller.setupWebserver(port,function(err,webserver) {
 
     app.set("view engine", "ejs");
 
