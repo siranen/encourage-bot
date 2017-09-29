@@ -8,12 +8,15 @@
     "express": "^4.14.0",
     "botkit": "^0.4.7",
     "redis": "*",
-    "when": "^3.7.7"
+    "when": "^3.7.7",
+    "snyk": "^1.41.1"
   },
   "devDependencies": {},
   "scripts": {
     "test": "mocha",
-    "start": "node botkit-master/slack_bot.js"
+    "start": "node botkit-master/slack_bot.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,6 @@
   "bugs": {
     "url": "https://github.com/shannonjanehogan/encourage-bot/issues"
   },
-  "homepage": "https://github.com/shannonjanehogan/encourage-bot#readme"
+  "homepage": "https://github.com/shannonjanehogan/encourage-bot#readme",
+  "snyk": true
 }
